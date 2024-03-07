@@ -22,3 +22,5 @@ from ._chart_bar._chart_bar import chart_bar
 from ._chart_line._chart_line import chart_line
 from ._chart_scatter._chart_scatter import chart_scatter
 from ._chart_pie._chart_pie import chart_pie
+from ._input_image._input_image import input_image
+from ._output_image._output_image import output_image
