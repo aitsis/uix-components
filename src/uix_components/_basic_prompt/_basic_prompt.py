@@ -5,12 +5,16 @@ import uix
 from uix.elements import button, border, input, canvas, text, div, row, header, col, label, icon, image
 from uix_components import basic_imagecard as imagecard
 from uix_components import basic_dialog as dialog
-
+from dotenv import load_dotenv
 from uix import T
+
+load_dotenv()
+PARRENT_PATH = os.getenv("PROMPT_BUILDER_IMAGES_PARENT_PATH")
 
 uix.html.add_css_file("_basic_prompt.css",__file__)
 
-cur_path = os.path.dirname(os.path.abspath(__file__))
+cur_path = PARRENT_PATH
+json_path = os.path.dirname(os.path.abspath(__file__))
 
 def get_image_data(folder_path):
     data = []
@@ -51,7 +55,7 @@ def get_image_data(folder_path):
 
 image_data = get_image_data(f"{cur_path}/images")
 
-prompt_json = open(f"{cur_path}/prompt.json", "r",encoding="utf-8")
+prompt_json = open(f"{json_path}/prompt.json", "r",encoding="utf-8")
 prompt_test = prompt_json.read()
 examples = json.loads(prompt_test)
 
