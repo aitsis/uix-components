@@ -142,12 +142,12 @@ class input_image(uix.Element):
                 self.eraser_tool =basic_checkbox(id=self.id + "-eraser-tool", label_text="<i class='fa-solid fa-eraser fa-2x'></i>", 
                                                  value=False, callback=self.eraser_mode)
             with border().size("100%", "max-content").cls("brush-tool-container"):
-                self.brushSize = basic_slider(id=self.id + "-brush-size", name="Brush Size" ,min=10, max=100, step=5, value=50, callback=self.on_slider_change)
+                self.brushSize = basic_slider(id=self.id + "-brush-size", name=T("Brush Size") ,min=10, max=100, step=5, value=50, callback=self.on_slider_change)
             with border().size("100%", "max-content").cls("brush-tool-container"):
-                text(value="Color")
+                text(value=T("Color"))
                 self.color_picker = input(id=self.id + "-color-picker", type="color", value="#000000").style("height", "30px").on("input", self.on_color_change)
             with border().size("100%", "max-content").cls("brush-tool-container"):
-                self.opacity = basic_slider(id=self.id + "-opacity", name="Opacity" ,min=0, max=1, step=0.1, value=1, callback=self.on_slider_change)
+                self.opacity = basic_slider(id=self.id + "-opacity", name=T("Opacity") ,min=0, max=1, step=0.1, value=1, callback=self.on_slider_change)
             
         with row(id=self.id + "canvas-container") as canvas_container:
             self.canvas_container = canvas_container

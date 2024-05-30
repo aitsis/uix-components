@@ -23,7 +23,7 @@ event_handlers["init-seadragon"] = function (id, value, event_name) {
 
 }
 event_handlers["init-interactive-seadragon"] = function (id, value, event_name) {
-    console.log("init-interactive-seadragon");
+
     let config = value
 
     let viewerConfig = {
@@ -33,6 +33,7 @@ event_handlers["init-interactive-seadragon"] = function (id, value, event_name) 
         tileSources : {"type": "image","url": config.image},
         showNavigationControl: true,
         maxZoomPixelRatio: 4,
+        autoHideControls: false,
     
     };
 
