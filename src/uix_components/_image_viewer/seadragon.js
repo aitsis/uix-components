@@ -121,7 +121,7 @@ function createIcon(id, name, value, iconClasses) {
     const display = "flex";
     const justifyContent = "center";
     const alignItems = "center";
-    image_url = ""
+    image_url = "/open_seadragon/images/" + value.icon;
     
     button_click = function (event) {
         clientEmit(id, name, "button_click");
