@@ -6,7 +6,7 @@ event_handlers["init-seadragon"] = function (id, value, event_name) {
 
     let viewerConfig = {
         id: id,
-        prefixUrl: "https://cdnjs.cloudflare.com/ajax/libs/openseadragon/4.1.0/images/",
+        prefixUrl: "/open_seadragon/images/",
         animationTime: 0,
         maxZoomPixelRatio: 4,
         tileSources : {"type": "image","url": config.image},
@@ -28,7 +28,7 @@ event_handlers["init-interactive-seadragon"] = function (id, value, event_name) 
 
     let viewerConfig = {
         id: id,
-        prefixUrl: "https://cdnjs.cloudflare.com/ajax/libs/openseadragon/4.1.0/images/",
+        prefixUrl: "/open_seadragon/images/",
         animationTime: 0,
         tileSources : {"type": "image","url": config.image},
         showNavigationControl: true,
@@ -121,7 +121,7 @@ function createIcon(id, name, value, iconClasses) {
     const display = "flex";
     const justifyContent = "center";
     const alignItems = "center";
-    image_url = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/webfonts/fa-solid-900.svg"
+    image_url = ""
     
     button_click = function (event) {
         clientEmit(id, name, "button_click");
