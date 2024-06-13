@@ -5,8 +5,7 @@ import os
 from PIL import Image
 uix.app.add_static_route("seadragon", os.path.dirname(__file__))
 uix.html.add_header_item("seadragon", '<script src="/seadragon/openseadragon.min.js"></script>')
-uix.html.add_script_source('interactive_seadragon', 'openseadragon-fabricjs-overlay.js',localpath=__file__, beforeMain=True)
-#uix.html.add_script_source('seadragon-js-lib', 'openseadragon.min.js',localpath=__file__,beforeMain=False)
+uix.html.add_header_item("interactive_seadragon", '<script src="/seadragon/openseadragon-fabricjs-overlay.js"></script>')
 uix.html.add_script_source('seadragon', 'seadragon.js',localpath=__file__, beforeMain=False)
 icons_path = os.path.join(os.path.dirname(__file__), "icons")
 
