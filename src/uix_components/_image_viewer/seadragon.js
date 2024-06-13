@@ -12,7 +12,7 @@ event_handlers["init-seadragon"] = function (id, value, event_name) {
         tileSources : {"type": "image","url": config.image},
         showNavigationControl: true,
     };
-
+    document.getElementById(id).innerHTML = "";
     document.getElementById(id).viewerConfig = config.buttonGroup;
     document.getElementById(id).viewer = OpenSeadragon(viewerConfig);
    let viewer = document.getElementById(id).viewer;
