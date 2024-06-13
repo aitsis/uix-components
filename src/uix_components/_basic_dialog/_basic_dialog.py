@@ -49,19 +49,23 @@ class basic_dialog(dialog):
 
         with self:
             self.cls("dialog-container")
-            with col(id="dialog-column").style("gap","20px"):
+            with col().style("gap","20px"):
                 with row("").cls("dialog-header"):
                     if self.title:
                         text(value=self.title).style("font-size","1.5rem").style("font-weight","bold")
                     else:
                         text(value="")
-                    with button("",id = self.btnID).cls("dialog-container-button").on("click", self.close) as self.close_btn:
+                    with button("").cls("dialog-container-button").on("click", self.close) as self.close_btn:
                         if close_icon:
-                            icon(self.close_icon, id=self.btnID + "-icon")
+                            icon(self.close_icon)
                         else:
-                            icon("fa-solid fa-xmark", id=self.btnID + "-icon" ).style("font-size","20px")
-                for element in self.dialog_elements:
-                    element()
+                            icon("fa-solid fa-xmark").style("font-size","20px")
+                with col(id=self.id + "-content") as self.content:
+                    for element in self.dialog_elements:
+                        element()
+
+    def update_elements(self, elements):
+        self.content.update(elements)
 
     def close(self, ctx, id, value):
         ctx.elements[self.id].hide()
