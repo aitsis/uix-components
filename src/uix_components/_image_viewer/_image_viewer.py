@@ -17,10 +17,13 @@ class image_viewer(uix.Element):
         self.value_name = None
 
         self.config = {
-            "buttonGroup": buttonGroup,
             "zoom":  zoom,
             "image": value,
         }
+        
+        if buttonGroup is not None:
+            self.config["buttonGroup"] = buttonGroup
+
         if size is not None and len(size) == 2:
             self.size(*size)
 
