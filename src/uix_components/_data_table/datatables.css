@@ -1,4 +1,4 @@
-/*
+/* 
  * This combined file was created by the DataTables downloader builder:
  *   https://datatables.net/download
  *
@@ -26,20 +26,11 @@
  /* table.dataTable td{
   text-align: center !important;
  } */
-  table.dataTable td, th {
+  /* table.dataTable td, th {
    text-align: center !important;
-   };
+   }; */
 
-  .dt-edit{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  
-  }
 
-  .dt-icon{
-    cursor: pointer;
-  }
  table.dataTable td.dt-control {
    text-align: center;
    cursor: pointer;
@@ -48,18 +39,18 @@
    display: inline-block;
    box-sizing: border-box;
    content: "";
-   border-top: 5px solid transparent;
+   /* border-top: 5px solid transparent;
    border-left: 10px solid rgba(0, 0, 0, 0.5);
    border-bottom: 5px solid transparent;
-   border-right: 0px solid transparent;
+   border-right: 0px solid transparent; */
  }
- table.dataTable tr.dt-hasChild td.dt-control:before {
+ /* table.dataTable tr.dt-hasChild td.dt-control:before {
    border-top: 10px solid rgba(0, 0, 0, 0.5);
    border-left: 5px solid transparent;
    border-bottom: 0px solid transparent;
    border-right: 5px solid transparent;
  }
- 
+  */
  html.dark table.dataTable td.dt-control:before,
  :root[data-bs-theme=dark] table.dataTable td.dt-control:before {
    border-left-color: rgba(255, 255, 255, 0.5);
@@ -369,7 +360,7 @@
  table.dataTable > thead > tr > th,
  table.dataTable > thead > tr > td {
    padding: 10px;
-   border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+   /* border-bottom: 1px solid rgba(0, 0, 0, 0.3); */
  }
  table.dataTable > thead > tr > th:active,
  table.dataTable > thead > tr > td:active {
@@ -386,9 +377,9 @@
  table.dataTable > tbody > tr:first-child > * {
    border-top: none;
  }
- table.dataTable > tbody > tr:last-child > * {
+ /* table.dataTable > tbody > tr:last-child > * {
    border-bottom: none;
- }
+ } */
  table.dataTable > tbody > tr.selected > * {
    box-shadow: inset 0 0 0 9999px rgba(13, 110, 253, 0.9);
    box-shadow: inset 0 0 0 9999px rgba(var(--dt-row-selected), 0.9);
@@ -571,23 +562,10 @@
    display: none;
  }
  div.dt-container .dt-search input {
-   border: 1px solid #aaa;
-   border-radius: 3px;
-   padding: 5px;
-   background-color: transparent;
-   color: inherit;
-   margin-left: 3px;
+   height: 100%;
  }
- div.dt-container .dt-input {
-   border: 1px solid #aaa;
-   border-radius: 3px;
-   padding: 5px;
-   background-color: var(--background-secondary);
-   color: inherit;
- }
- div.dt-container select.dt-input {
-   padding: 4px;
- }
+
+
  div.dt-container .dt-paging .dt-paging-button {
    box-sizing: border-box;
    display: inline-block;
@@ -669,7 +647,7 @@
    margin: 0 !important;
    padding: 0 !important;
  }
- div.dt-container.dt-empty-footer tbody > tr:last-child > * {
+ /* div.dt-container.dt-empty-footer tbody > tr:last-child > * {
    border-bottom: 1px solid rgba(0, 0, 0, 0.3);
  }
  div.dt-container.dt-empty-footer .dt-scroll-body {
@@ -678,7 +656,7 @@
  div.dt-container.dt-empty-footer .dt-scroll-body tbody > tr:last-child > * {
    border-bottom: none;
  }
- 
+  */
  @media screen and (max-width: 767px) {
    div.dt-container div.dt-layout-row {
      display: block;
@@ -706,9 +684,9 @@
    --dt-column-ordering: 255, 255, 255;
  }
  html.dark table.dataTable > thead > tr > th,
- html.dark table.dataTable > thead > tr > td {
+ /* html.dark table.dataTable > thead > tr > td {
    border-bottom: 1px solid rgb(89, 91, 94);
- }
+ } */
  html.dark table.dataTable > thead > tr > th:active,
  html.dark table.dataTable > thead > tr > td:active {
    outline: none;
@@ -736,9 +714,9 @@
  html.dark table.dataTable.cell-border > tbody > tr > td:first-child {
    border-left: 1px solid rgb(64, 67, 70);
  }
- html.dark .dt-container.dt-empty-footer table.dataTable {
+ /* html.dark .dt-container.dt-empty-footer table.dataTable {
    border-bottom: 1px solid rgb(89, 91, 94);
- }
+ } */
  html.dark .dt-container .dt-search input,
  html.dark .dt-container .dt-length select {
    border: 1px solid rgba(255, 255, 255, 0.2);
@@ -948,7 +926,7 @@
  }
  div.dt-button-collection span.dt-button-spacer.bar {
    border-left: none;
-   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+   /* border-bottom: 1px solid rgba(0, 0, 0, 0.1); */
    padding-left: 0;
  }
  
