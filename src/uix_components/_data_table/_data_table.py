@@ -12,7 +12,7 @@ uix.html.add_script_source('data-table-init-js', 'datatable_comp.js', localpath=
 
 
 class data_table(uix.Element):
-    def __init__(self, id=None, data=[],dialog_id=None,callback=None,config=None):
+    def __init__(self, id=None, data=[],cols=None,dialog_id=None,callback=None,config=None):
         super().__init__(id=id)
         columns = []
         self.id = id
@@ -32,15 +32,17 @@ class data_table(uix.Element):
             with table(id=self.id + "-table",value="").cls("stripe hover"):
                 with thead():
                     with tr():
-                        for key in data[0].keys():
-                            columns.append({"data": key})
-                            th(key)
+                        if cols:
+                            for key, value in cols.items():
+                                columns.append({"data": key})
+                                th(value)
+                        else:
+                            for key in data[0].keys():
+                                columns.append({"data": key})
+                                th(key)
 
                         
-                        
-                                                                        
                     
-                            
     def init(self):
         self.session.send(self.id+"-table", self.config ,"init-data-table")
 
