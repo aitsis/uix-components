@@ -3,12 +3,15 @@ from uuid import uuid4
 import uix
 import os
 from PIL import Image
-uix.app.add_static_route("seadragon", os.path.dirname(__file__))
+
+base_path = os.path.dirname(__file__)
+public_path = os.path.join(base_path, "public")
+
 uix.html.add_header_item("seadragon", '<script src="/seadragon/openseadragon.min.js"></script>')
 uix.html.add_header_item("interactive_seadragon", '<script src="/seadragon/openseadragon-fabricjs-overlay.js"></script>')
-uix.html.add_script_source('seadragon', 'seadragon.js',localpath=__file__, beforeMain=False)
-icons_path = os.path.join(os.path.dirname(__file__), "icons")
+uix.html.add_script_source('seadragon', 'seadragon.js',localpath=os.path.join(public_path, "seadragon.js"), beforeMain=False)
 
+uix.app.add_static_route("seadragon", public_path)
 
 class image_viewer(uix.Element):
     def __init__(self, id = None, value=None, buttonGroup=None, zoom=False, size=(500,500), isInteractive=False):
