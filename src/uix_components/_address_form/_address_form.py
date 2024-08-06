@@ -1,6 +1,5 @@
 import os
 import json
-import io
 import uix
 from uix.elements import row, col, input, button, div
 from uix_components import basic_checkbox, basic_datalist
@@ -8,11 +7,22 @@ from uix import T
 
 uix.html.add_css_file("_address_form.css",__file__)
 
+base_path = os.path.dirname(__file__)
+def setup_json_files():
+		with open(os.path.join(base_path, 'address.json'), "r", encoding='utf-8') as address_json:
+				address_data = json.loads(address_json.read())
+
+		with open(os.path.join(base_path, 'ulke.json'), "r", encoding='utf-8') as country_json:
+				countries = json.loads(country_json.read())
+		
+		return address_data, countries
+
+address_data, countries = setup_json_files()
+
 class address_form(uix.Element):
-    def __init__(self, id, callback=None):
+    def __init__(self, id=None, callback=None):
         super().__init__(id=id)
         self.callback = callback
-        self.setup_json_files()
         self.city_value = None
         self.counties_value = None
         self.isCorporate = False
@@ -25,12 +35,12 @@ class address_form(uix.Element):
                 with col().cls("address-grid"):
                     self.zip_code = input(name="ZipCode", type="tel", placeholder=T("Zip Code"), required=True).on("change", self.input_setter)
                 with col().cls("address-grid"):
-                    options = {T("Select Country"): T("Select Country"), **{country['code']: country['name'] for country in self.countries}}
+                    options = {T("Select Country"): T("Select Country"), **{country['code']: country['name'] for country in countries}}
                     self.country = basic_datalist(name="", id="countries", options=options, placeholder=T("Select Country"), required=True, callback=self.get_options)
                 with col(id="turkey_addressFormat").cls("hidden address-grid").style("gap","10px") as turkey_addressFormat:
                     self.turkey_addressFormat = turkey_addressFormat
                     with row().style("height", "max-content"):
-                        options_city = {key: key for key in self.address_data}
+                        options_city = {key: key for key in address_data}
                         self.city_datalist = basic_datalist(name="", id="cities", options = options_city, placeholder=T("Select City"), callback=self.get_counties).style("width", "100%")                  
                         options_county = {"Select County": "Select County"}
                         self.counties_datalist = basic_datalist(name="", id="counties", options=options_county, placeholder=T("Select County"), callback=self.get_neighborhoods).style("width", "100%")                      
@@ -60,18 +70,6 @@ class address_form(uix.Element):
                         self.eFatura = basic_checkbox(id="efatura", label_text="E-Fatura Mükellefiyim").cls("eFatura-checkbox").style("display", "none")
                 with row().cls("address-grid").style("height", "max-content"):
                     self.add_button=button(id=self.id+"-button",value=T("Add Billing Address")).cls("save-button").on("click", self.add_address)
-
-    def setup_json_files(self):
-        current_path = os.path.dirname(os.path.realpath(__file__))
-        with io.open(os.path.join(current_path, 'address.json'),"r", encoding='utf-8') as address_json:
-            data = address_json.read()
-            address_json.close()
-        self.address_data = json.loads(data)
-
-        with io.open(os.path.join(current_path, 'ulke.json'),"r", encoding='utf-8') as country_json:
-            country = country_json.read()
-            country_json.close()
-        self.countries = json.loads(country)
 
     def input_setter(self, ctx, id, value):
         ctx.elements[id].value = value.upper()
@@ -130,7 +128,7 @@ class address_form(uix.Element):
     def get_counties(self, ctx, id, value):
         value_=value.upper()
         self.city.value = value
-        self.selected_city_counties = self.address_data.get(value_, [])
+        self.selected_city_counties = address_data.get(value_, [])
         countiesData = {key: key for key in self.selected_city_counties}
         content = ctx.elements["counties"]
         self.datalist_setter(self.city,value_)
