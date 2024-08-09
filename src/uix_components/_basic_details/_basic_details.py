@@ -1,10 +1,17 @@
-import uix
+from uix import app, Element
 from uix.elements import details, text, div
 
-uix.html.add_css_file("_basic_details.css",__file__)
-class basic_details(uix.Element):
+app.serve_module_static_files(__file__)
+
+def register_resources(cls):
+    cls.register_style("_basic_details_css", "/_basic_details/_basic_details.css", is_url=True)
+    return cls
+
+@register_resources
+class basic_details(Element):
     def __init__(self, value, id = None,label_=None, acc_elements = list()):
         super().__init__(value,id = id)
+
         self.cls("border")
         self.style("width","100%")
         with self:

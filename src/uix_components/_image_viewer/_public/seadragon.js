@@ -1,7 +1,6 @@
 let color = "black";
 let brushsize = 50;
 event_handlers["init-seadragon"] = function (id, value, event_name) {
-   
     let config = value
 
     let viewerConfig = {
@@ -34,7 +33,6 @@ event_handlers["init-interactive-seadragon"] = function (id, value, event_name) 
         showNavigationControl: true,
         maxZoomPixelRatio: 4,
         autoHideControls: false,
-    
     };
 
     document.getElementById(id).viewerConfig = config.buttonGroup;
@@ -71,13 +69,13 @@ event_handlers["init-interactive-seadragon"] = function (id, value, event_name) 
             overlayImage.src = overlay.fabricCanvas().toDataURL("image/png", 1.0);
 
             overlayImage.onload = function() {
-                
+
                 mergeCtx.drawImage(overlayImage, imageBounds.x, imageBounds.y, imageBounds.width, imageBounds.height);
-                
+
                 const data = mergeCanvas.toDataURL("image/png", 1.0);
                 const blob = dataURItoBlob(data);
                 const imageUrl = URL.createObjectURL(blob);
-                
+
                 clientEmit(generate_button_id, {
                     "url": imageUrl,
                     "imageSize": blob.size,
@@ -96,7 +94,7 @@ function createIcons(viewer,config) {
 
     for (const [key, value] of Object.entries(buttons)) {
         let button = createIcon(viewer.id, key, value, value.icon);
-    
+
         viewer.buttonGroup.buttons.push(button);
     }
 }
@@ -122,7 +120,7 @@ function createIcon(id, name, value, iconClasses) {
     const justifyContent = "center";
     const alignItems = "center";
     image_url = "/open_seadragon/images/" + value.icon;
-    
+
     button_click = function (event) {
         clientEmit(id, name, "button_click");
     }
@@ -147,11 +145,11 @@ function createIcon(id, name, value, iconClasses) {
 
     const iconElement = document.createElement('i');
     iconElement.classList.add('fas'); // Add FontAwesome base class
-    
+
     iconClasses.split(' ').forEach(iconClass => {
         iconElement.classList.add(iconClass);
     });
-    
+
     if (value.icon_styles){
         applyStyles(iconElement, value.icon_styles);
     }
@@ -159,7 +157,7 @@ function createIcon(id, name, value, iconClasses) {
     clearButtonGroupElements(button);
     button.element.appendChild(iconElement);
     viewer.buttonGroup.element.appendChild(button.element);
-    
+
     return button;
 }
 function clearButtonGroupElements(button) {
@@ -174,7 +172,7 @@ event_handlers["seadragon"] = function (id, command, event_name) {
     const viewer = document.getElementById(id).viewer;
     switch (command.action) {
         case "open":
-            
+
             viewer.world.removeAll();
             viewer.open(command.value);
             break;
@@ -191,7 +189,7 @@ event_handlers["seadragon"] = function (id, command, event_name) {
         case "zoomIn":
             viewer.viewport.zoomBy(1.5);
             break;
-        
+
         case "zoomOut":
             viewer.viewport.zoomBy(0.5);
             break;
@@ -199,7 +197,7 @@ event_handlers["seadragon"] = function (id, command, event_name) {
         case "home":
             viewer.viewport.goHome();
             break;
-        
+
         case "fullscreen":
             if (viewer.isFullPage()) {
                 viewer.setFullScreen(false);
@@ -239,17 +237,17 @@ event_handlers["seadragon"] = function (id, command, event_name) {
 
 event_handlers["interactive-seadragon"] = function (id, command, event_name) {
     const viewer = document.getElementById(id).viewer;
-   
+
     const overlay = document.getElementById(id).overlay;
     switch (command.action) {
 
         case "open":
             viewer.world.removeAll();
             viewer.open(command.value);
-     
+
             overlay.fabricCanvas().clear();
-            
-   
+
+
             break;
 
         case "open-edit-area":
@@ -271,7 +269,7 @@ event_handlers["interactive-seadragon"] = function (id, command, event_name) {
                 }
             });
             break;
-            
+
         case "editBrush":
             color = hexToRgbA(command.value["color"], command.value["opacity"]);
             brushsize = command.value["brushSize"];
@@ -288,7 +286,7 @@ event_handlers["interactive-seadragon"] = function (id, command, event_name) {
                 document.getElementById(id).overlay .fabricCanvas().freeDrawingBrush.width = command.value["brushSize"];}
             else {
                 document.getElementById(id).overlay .fabricCanvas().freeDrawingBrush = new fabric.PencilBrush(document.getElementById(id).overlay .fabricCanvas());
-                freeDraw(true, overlay, viewer);   
+                freeDraw(true, overlay, viewer);
             }
 
             break;
@@ -299,11 +297,11 @@ event_handlers["interactive-seadragon"] = function (id, command, event_name) {
             if (document.getElementById(id).overlay .fabricCanvas().getActiveObject()) {
                 document.getElementById(id).overlay .fabricCanvas().remove(document.getElementById(id).overlay .fabricCanvas().getActiveObject());
             }
-    
+
         }
     }
-    
-    
+
+
 }
 
 
@@ -349,4 +347,3 @@ function freeDraw(flag, over,viewer) {
     }
 
 }
-

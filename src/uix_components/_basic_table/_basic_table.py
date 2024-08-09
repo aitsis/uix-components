@@ -1,7 +1,7 @@
-import uix 
+from uix import Element
 from uix.elements import table, th, tr, td, thead, tbody
 
-class basic_table(uix.Element):
+class basic_table(Element):
     def __init__(self, id=None, headers=[], data=[]):
         super().__init__(id=id)
         self.style("overflow: auto;")

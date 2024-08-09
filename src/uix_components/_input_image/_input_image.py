@@ -1,49 +1,52 @@
-import uix
+from uix import Element, app, T
 from uix.elements import file,col,text,label, row, input,border
 from uix_components import basic_slider, basic_checkbox
-from uix import T
 from uix_components import image_viewer, fabric, button_group
 
-uix.html.add_css_file("_input_image.css",__file__)
-
 buttonGroupConfig = {
-            "seadragon": {
-                "Delete": {
-                    "icon": "fa-solid fa-trash-can",
-                    "icon_styles": {"font-size": "20px", "color": "var(--danger-color)"},
-                },
+        "seadragon": {
+            "Delete": {
+                "icon": "fa-solid fa-trash-can",
+                "icon_styles": {"font-size": "20px", "color": "var(--danger-color)"},
             },
-            "fabric": {
-                "Delete": {
-                    "icon": "fa-solid fa-trash-can",
-                    "icon_styles": {"font-size": "20px", "color": "var(--danger-color)"},
-                    "onClick": "",
-                },
+        },
+        "fabric": {
+            "Delete": {
+                "icon": "fa-solid fa-trash-can",
+                "icon_styles": {"font-size": "20px", "color": "var(--danger-color)"},
+                "onClick": "",
             },
-           "interactive_imageViewer": {
-                "Delete": {
-                    "icon": "fa-solid fa-trash-can",
-                    "icon_styles": {"font-size": "20px", "color": "var(--danger-color)"},
-                },
-                "Edit": {
-                    "icon": "fa-solid fa-pencil",
-                    "icon_styles": {"font-size": "20px", "color": "var(--ait)"},
-                },
-                "Change Canvas": {
-                    "icon": "fa-solid fa-refresh",
-                    "icon_styles": {"font-size": "20px", "color": "var(--ait)"},
-                },
-                "Pan Mode": {
-                    "icon": "fa-solid fa-hand",
-                    "icon_styles": {"font-size": "20px", "color": "var(--ait)"},
-                },
-       
-
-        }}
+        },
+        "interactive_imageViewer": {
+            "Delete": {
+                "icon": "fa-solid fa-trash-can",
+                "icon_styles": {"font-size": "20px", "color": "var(--danger-color)"},
+            },
+            "Edit": {
+                "icon": "fa-solid fa-pencil",
+                "icon_styles": {"font-size": "20px", "color": "var(--ait)"},
+            },
+            "Change Canvas": {
+                "icon": "fa-solid fa-refresh",
+                "icon_styles": {"font-size": "20px", "color": "var(--ait)"},
+            },
+            "Pan Mode": {
+                "icon": "fa-solid fa-hand",
+                "icon_styles": {"font-size": "20px", "color": "var(--ait)"},
+            },
 
 
+    }
+}
 
-class input_image(uix.Element):
+app.serve_module_static_files(__file__)
+
+def register_resources(cls):
+    cls.register_style("_input_image_css", "/_input_image/_input_image.css", is_url=True)
+    return cls
+
+@register_resources
+class input_image(Element):
     def __init__(
             self,
             value=None,
@@ -81,7 +84,7 @@ class input_image(uix.Element):
                     self.dropzone_inside = dropzone_inside
                     text(T("Click to upload")).style("font-size","1.5rem")
                     text(T("It supports only png , jpeg files . Upload size is limited to 10MB")).style("font-size","1rem")
-                    
+
             if viewer == "seadragon":
                 self.create_image_viewer("my_images/AIT_AI_LOGO.png")
 
@@ -93,7 +96,7 @@ class input_image(uix.Element):
 
     def file_callback(self,ctx, id, event, data, status):
         if event == "select":
-            self.upload_file(ctx, data, status)    
+            self.upload_file(ctx, data, status)
         elif event == "upload":
             self.upload_callback(ctx, id, data, status)
 
@@ -127,19 +130,19 @@ class input_image(uix.Element):
                 self.dropzone_image.set_style("display", "none")
         else:
             ctx.elements["comp_alert"].open("alert-danger", T("File upload failed."))
-  
+
     def create_image_viewer(self, image_url):
         with row(id=self.id + "canvas-container") as canvas_container:
-            self.canvas_container = canvas_container 
+            self.canvas_container = canvas_container
             self.dropzone_image = image_viewer(id=self.viewer_id, value=image_url, buttonGroup=buttonGroupConfig["seadragon"]).size("100%", "100%")
-        self.canvas_container.style("visibility", "hidden") 
+        self.canvas_container.style("visibility", "hidden")
         self.dropzone_image.on("button_click", self.on_button_click)
         self.dropzone_image.style("display: none ; z-index: 3")
 
     def create_drawable_image_viewer(self,image_url):
         with col(id=self.id + "-color-picker-container").cls("color-picker-container"):
             with row().size("100%", "max-content").style("justify-content", "end"):
-                self.eraser_tool =basic_checkbox(id=self.id + "-eraser-tool", label_text="<i class='fa-solid fa-eraser fa-2x'></i>", 
+                self.eraser_tool =basic_checkbox(id=self.id + "-eraser-tool", label_text="<i class='fa-solid fa-eraser fa-2x'></i>",
                                                  value=False, callback=self.eraser_mode)
             with border().size("100%", "max-content").cls("brush-tool-container"):
                 self.brushSize = basic_slider(id=self.id + "-brush-size", name=T("Brush Size") ,min=10, max=100, step=5, value=50, callback=self.on_slider_change)
@@ -148,11 +151,11 @@ class input_image(uix.Element):
                 self.color_picker = input(id=self.id + "-color-picker", type="color", value="#000000").style("height", "30px").on("input", self.on_color_change)
             with border().size("100%", "max-content").cls("brush-tool-container"):
                 self.opacity = basic_slider(id=self.id + "-opacity", name=T("Opacity") ,min=0, max=1, step=0.1, value=1, callback=self.on_slider_change)
-            
+
         with row(id=self.id + "canvas-container") as canvas_container:
             self.canvas_container = canvas_container
             self.dropzone_image = image_viewer(id=self.viewer_id, value=image_url, buttonGroup=buttonGroupConfig["interactive_imageViewer"],isInteractive=True).size("100%", "100%")
-        
+
         self.file.style("display", "none")
         self.dropzone_parent.style("display", "none")
         self.canvas_container.style("visibility", "visible")
@@ -165,7 +168,7 @@ class input_image(uix.Element):
         with row(id=self.id + "canvas-container") as canvas_container:
             self.canvas_container = canvas_container
             self.dropzone_image = fabric(id=self.viewer_id)
-        self.canvas_container.style("visibility", "hidden") 
+        self.canvas_container.style("visibility", "hidden")
         self.dropzone_image.style("display: none ; z-index: 8")
         buttonGroupConfig["fabric"]["Delete"]["onClick"] = self.resetImage
         button_group(items=buttonGroupConfig["fabric"], id=self.viewer_id + "-button-group").cls("button-group")
@@ -179,7 +182,7 @@ class input_image(uix.Element):
             self.dropzone_image.value = "my_images/white_background.jpg"
         elif value == "Pan Mode":
             self.dropzone_image.set_pan_mode()
-      
+
     def resetImage(self,ctx, id, value):
             if self.dropzone_image.value:
                 self.hide_image()
@@ -193,12 +196,12 @@ class input_image(uix.Element):
             self.show_image()
             self.dropzone_image.value = url
             self.imageID = imageID
-          
+
         else:
             self.hide_image()
-    
-    
-        
+
+
+
     def show_image(self):
         self.dropzone_parent.set_style("display", "none")
         self.dropzone_inside.set_style("display", "none")
@@ -208,17 +211,17 @@ class input_image(uix.Element):
         self.canvas_container.set_style("visibility", "visible")
 
     def hide_image(self):
-        self.canvas_container.set_style("visibility", "hidden")       
-        self.dropzone_parent.set_style("display", "flex")         
+        self.canvas_container.set_style("visibility", "hidden")
+        self.dropzone_parent.set_style("display", "flex")
         self.dropzone_inside.set_style("display", "flex")
         self.dropzone_image.set_style("display", "none")
         self.dropzone_image.value = None
-        self.file.set_style("display", "flex !important")   
+        self.file.set_style("display", "flex !important")
         self.file.value = None
         self.loading_file.set_style("display", "none")
 
     def on_color_change(self,ctx, id, value):
-        ctx.elements[id].value = value     
+        ctx.elements[id].value = value
         self.dropzone_image.edit_brush(color=self.color_picker.value,opacity=self.opacity.slider.value,brushSize=self.brushSize.slider.value)
 
     def on_slider_change(self,ctx, id, value):
@@ -231,4 +234,3 @@ class input_image(uix.Element):
         else:
             self.eraser_tool.set_style("color", "var(--text-color)")
         self.dropzone_image.eraser_tool(brushSize=self.brushSize.slider.value, value=value)
-    

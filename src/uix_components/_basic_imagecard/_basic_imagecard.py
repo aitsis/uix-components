@@ -1,8 +1,8 @@
-import uix
-
+from uix import Element, app
 from uix.elements import text, image, div, col
 
-uix.html.add_css("imagecard-css",""".card {
+style = """
+.card {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     padding: 5px;
     text-align: center;
@@ -53,10 +53,14 @@ uix.html.add_css("imagecard-css",""".card {
     display: flex;
     justify-content: center;
     align-items: center;
-                 }
-""")
+}"""
 
-class basic_imagecard(uix.Element):
+def register_resources(cls):
+    cls.register_style("basic_imagecard_css", style)
+    return cls
+
+@register_resources
+class basic_imagecard(Element):
     def __init__(self, value=None, id=None, imagesrc=None, textstr=None):
         super().__init__(value, id=id)
 
@@ -75,5 +79,5 @@ class basic_imagecard(uix.Element):
                     with div().cls("from-bottom"):
                         text(self.textstr)
 
-    def on_image_load(self, ctx, id, value):    
+    def on_image_load(self, ctx, id, value):
         self.loading.set_style("display", "none")

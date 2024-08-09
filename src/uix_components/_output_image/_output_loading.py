@@ -1,18 +1,18 @@
-import uix
+from uix import Element
 from uix.elements import image, div
 
-uix.html.add_css("loading-css", """
+style = """
 @keyframes loading-bar {
     0% {
         width: 0%;
         background-color: #00573d;
     }
-    
+
     100% {
         background-color: #333333;
         width: 100%;
     }
-}         
+}
 
 @keyframes ping-black {
     0% {
@@ -24,7 +24,7 @@ uix.html.add_css("loading-css", """
     100% {
         opacity: 0.7;
     }
-}   
+}
 
 .loading-bar {
     border-radius: 3px;
@@ -34,14 +34,19 @@ uix.html.add_css("loading-css", """
 .ait-search-logo {
     position: absolute;
     top: 45%;
-    left: 45%;  
+    left: 45%;
     }
 
     hidden {
     display: none;
-}""")
+}"""
 
-class output_loading(uix.Element):    
+def register_resources(cls):
+    cls.register_style("output_loading_css", style)
+    return cls
+
+@register_resources
+class output_loading(Element):
     def __init__(self, id=None):
         super().__init__(id=id)
         (

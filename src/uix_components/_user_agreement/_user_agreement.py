@@ -1,14 +1,15 @@
-import os
-import io
-import uix
+from uix import Element, app
 from uix.elements import row, col, button
 
-uix.html.add_css_file("_user_agreement.css",__file__)
-uix.html.add_script_source(id="useragreement-js",script="_user_agreement.js",beforeMain=False,localpath=__file__)
+app.serve_module_static_files(__file__)
 
-path=os.path.join(os.path.dirname(os.path.dirname(__file__)), "_user_agreement")
+def register_resources(cls):
+    cls.register_script("_user_agreement.css", "/_user_agreement/_user_agreement.css", is_url=True)
+    cls.register_script("useragreement-js", "/_user_agreement/_user_agreement.js", is_url=True)
+    return cls
 
-class user_agreement(uix.Element):
+@register_resources
+class user_agreement(Element):
     def __init__(self,
                 id=None,
                 user_agreement=None,

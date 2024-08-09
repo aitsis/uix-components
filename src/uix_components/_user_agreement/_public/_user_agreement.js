@@ -13,19 +13,19 @@ event_handlers["init-contract"] = (id, value, event_name) => {
             acceptButton.classList.add("hidden");
         }
     }
-    
+
     const observer = new IntersectionObserver(obCallback, { root: terms, threshold: 0.9 });
     observer.observe(termsLastElement);
     acceptButton.addEventListener("click", () => {
-                  
+
         if (event_handlers[value.func_name])
         {
         event_handlers[value.func_name](id, value, event_name);};
 
         const checkbox = document.getElementById("userAgreementCheck").firstChild;
         checkbox.checked = true;
-        
+
     });
-    
-   
+
+
 };

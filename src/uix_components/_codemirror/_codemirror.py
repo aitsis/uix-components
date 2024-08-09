@@ -1,14 +1,19 @@
-from uix_components._basic_alert._basic_alert import basic_alert
-from uix.elements import textarea
 import types
-import uix
+from uix import Element, app
+from uix.elements import textarea
+from uix_components._basic_alert._basic_alert import basic_alert
 
-uix.html.add_script_source("codemirrorjs","_codemirror.js",False,__file__)
-uix.html.add_script_source("codemirrorpython","_codemirror_python.js",False,__file__)
-uix.html.add_script_source("codemirror-init","_codemirror_init.js",False,__file__)
-uix.html.add_css_file("_codemirror.css",__file__)
+app.serve_module_static_files(__file__)
 
-class codemirror(uix.Element):
+def register_resources(cls):
+    cls.register_style("_codemirror_css", "/_codemirror/_codemirror.css", is_url=True)
+    cls.register_script("_codemirror_init.js", "/_codemirror/_codemirror_init.js", is_url=True)
+    cls.register_script("_codemirror_python.js", "/_codemirror/_codemirror_python.js", is_url=True)
+    cls.register_script("_codemirror.js", "/_codemirror/_codemirror.js", is_url=True)
+    return cls
+
+@register_resources
+class codemirror(Element):
     def __init__(self, id=None, cm_parent_id=None, code=None, func_name=None):
         super().__init__(id=id)
         self.cm_parent_id = cm_parent_id
@@ -26,12 +31,12 @@ class codemirror(uix.Element):
             globals().update(vars(dynamic_module))
             exec(modified_code, dynamic_module.__dict__)
             file_example_func = getattr(dynamic_module, self.func_name, None)
-            
+
             if file_example_func:
                 with ctx.elements[self.cm_parent_id] as parent_container:
                     file_example_func()
-                    parent_container.update()        
-                self.show_alert("alert-success", "Code executed successfully") 
+                    parent_container.update()
+                self.show_alert("alert-success", "Code executed successfully")
             else:
                 self.show_alert("alert-danger", f"Function {self.func_name} not found in code")
 
@@ -40,12 +45,12 @@ class codemirror(uix.Element):
 
         except NameError as name_err:
             self.show_alert("alert-danger", f"Name Error: {name_err}")
-            
+
         except Exception as e:
             self.show_alert("alert-danger", "Error compiling/executing code: " + str(e))
 
     def init(self):
         self.session.queue_for_send(self.id, {"string": self.code}, "codemirror-init")
-    
+
     def show_alert(self, alert_type, message):
         self.alert.open(alert_type, message)

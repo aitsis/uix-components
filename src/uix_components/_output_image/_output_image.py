@@ -41,7 +41,7 @@ class output_image(uix.Element):
         self.viewer=viewer
         self.cls("wall hall")
         self.style("position", "relative")
-       
+
 
         with self:
             if self.viewer == "seadragon":
@@ -79,15 +79,15 @@ class output_image(uix.Element):
                 name=self.image_viewer.value.split("/")[-1]
                 self.buttonGroup.link.attrs["download"]=name
                 self.buttonGroup.update()
-                
+
         elif imageID is None:
             self.image_viewer.add_class("opacity-30")
             self.image_viewer.value = "my_images/AIT_AI_LOGO.png"
-        
+
         else:
             self.image_viewer.value = url
-        
-      
+
+
     def loading(self, is_loading=True):
         if is_loading:
             self.image_viewer.add_class("hidden")
@@ -95,7 +95,7 @@ class output_image(uix.Element):
         else:
             self.output_loading.add_class("hidden")
             self.image_viewer.remove_class("hidden")
-       
+
     def sendToInput(self,ctx,id,value):
         if value == None and "comp_alert" in ctx.elements:
             ctx.elements["comp_alert"].open("alert-danger",(T("Something went wrong")))
@@ -103,12 +103,12 @@ class output_image(uix.Element):
             "id": self.value,
             "url": self.image_viewer.value
         }
-        
+
         if self.setinputImage is not None:
             self.setinputImage(dataToSend)
         else:
             pass
-        
+
     def addToFavorite(self,ctx,id,value):
         if self.add_to_favorite is not None:
             self.add_to_favorite(ctx, id, self.value)
@@ -129,8 +129,3 @@ class output_image(uix.Element):
             self.sendToInput(ctx, id, self.value)
         elif value == "Save":
             self.addToFavorite(ctx, id, value)
-
-
-    
-
-

@@ -3,27 +3,27 @@
     --radius  : 8px;
     padding: 0px;
   }
-  
+
   .tree li{
     display      : block;
     position     : relative;
     padding-left : calc(2 * var(--spacing) - var(--radius) - 2px);
-    
+
   }
-  
+
   .tree ul{
     margin-left  : calc(var(--radius) - var(--spacing));
     padding-left : 0;
   }
-  
+
   .tree ul li{
     border-left : 2px solid #ddd;
   }
-  
+
   .tree ul li:last-child{
     border-color : transparent;
   }
-  
+
   .tree ul li::before{
     content      : '';
     display      : block;
@@ -35,7 +35,7 @@
     border       : solid #ddd;
     border-width : 0 0 2px 2px;
   }
-  
+
 .tree summary{
     padding: 0px;
     display: block;
@@ -43,20 +43,20 @@
     font-size: medium;
     background-color: transparent;
   }
-  
+
   .tree summary::marker,
   .tree summary::-webkit-details-marker{
     display : none;
   }
-  
+
   .tree summary:focus{
     outline : none;
   }
-  
+
   .tree summary:focus-visible{
     outline : 1px dotted #000;
   }
-  
+
   .tree ul::after,
   .tree summary::before{
     content       : '';
@@ -68,9 +68,9 @@
     height        : calc(2 * var(--radius));
     border-radius : 50%;
     background    : var(--border-color);
-  
+
   }
-  
+
   .tree ul li label:hover{
     color: var(--ait);
     font-weight: bold;
@@ -94,7 +94,7 @@
     background: white;
     border: 1px solid white;
   }
-  
+
   /* last child olarak son elemanlar gözüküyor fakat son elemanların ilki ul gibi davranıyor */
   /* bu yüzden ikisinede css eklendi */
   /* last child start*/
@@ -111,7 +111,7 @@
     background: transparent;
     border: 1px solid white;
   }
-  
+
   .tree li:last-child::after,
   .tree summary:last-child::before {
     content: '';
@@ -128,12 +128,12 @@
   /* last child end */
   .tree summary::before {
     z-index: 1;
-    background: var(--ait) url('https://img.icons8.com/material-rounded/24/ffffff/plus--v1.png'); 
-    content: ''; 
+    background: var(--ait) url('https://img.icons8.com/material-rounded/24/ffffff/plus--v1.png');
+    content: '';
     display: inline-block;
-    width: 16px; 
-    height: 16px; 
-    background-size: cover; 
+    width: 16px;
+    height: 16px;
+    background-size: cover;
   }
   .details{
     overflow: visible;
@@ -141,13 +141,12 @@
   }
 
   .tree details[open] > summary::before{
-    background-image: url('https://img.icons8.com/material-rounded/24/ffffff/minus.png'); 
-    content: ''; 
+    background-image: url('https://img.icons8.com/material-rounded/24/ffffff/minus.png');
+    content: '';
     display: inline-block;
-    width: 16px; 
-    height: 16px; 
+    width: 16px;
+    height: 16px;
     background-size: cover;
     z-index: 1;
     overflow: visible;
   }
-  

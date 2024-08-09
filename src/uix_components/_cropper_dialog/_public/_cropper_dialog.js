@@ -1,10 +1,10 @@
-var canvas = null; 
+var canvas = null;
 var paddingValue = 20;
 var croppedImageUrl = null;
 
 event_handlers["init-cropper"] = (id, value, event_name) => {
     const doneButton = document.getElementById('doneButton');
-    
+
     if (!canvas) { // Eğer canvas daha önce oluşturulmamışsa
         canvas = new fabric.Canvas(value.cropCanvas);
         canvas.background = '#FFFFFF';
@@ -18,39 +18,39 @@ event_handlers["init-cropper"] = (id, value, event_name) => {
         var imgWidth = oImg.width;
         var imgHeight = oImg.height;
         var ratio = 1;
-    
+
         // Calculate the ratio to fit the image within canvas bounds
         if (imgWidth > maxWidth || imgHeight > maxHeight) {
             var widthRatio = maxWidth / imgWidth;
             var heightRatio = maxHeight / imgHeight;
             ratio = Math.min(widthRatio, heightRatio);
         }
-    
+
         // Resize the image
         oImg.scale(ratio);
-    
+
         // Position the image in the center of the canvas
         oImg.set({
             left: (canvas.width - oImg.width * ratio) / 2,
             top: (canvas.height - oImg.height * ratio) / 2
         });
-    
+
         canvas.clear(); // Clear previous content
         canvas.add(oImg); // Add the resized image to the canvas
         canvas.setPadding(20);
-        canvas.renderAll(); 
+        canvas.renderAll();
     });
 
     canvas.on('object:moving', function(e) {
         const target = e.target;
         const canvasWidth = canvas.getWidth();
         const canvasHeight = canvas.getHeight();
-        
+
         //target.lockRotation = true; // Resmi döndürmeyi kapat
         //target.hasControls = false; // Nesnenin döndürme kollarını devre dışı bırak
         //target.lockScalingX = true; // Resmi boyutlandırmayı kapat
         //target.lockScalingY = true; // Resmi boyutlandırmayı kapat
-      
+
         if (target.left < paddingValue / 2) {
           target.left = paddingValue / 2;
         }
@@ -65,10 +65,10 @@ event_handlers["init-cropper"] = (id, value, event_name) => {
         }
         canvas.renderAll();
       });
-    
+
 
     canvas.on({
-    'mouse:dblclick': function(obj){ 
+    'mouse:dblclick': function(obj){
         var target = obj.target ? obj.target : null;
         if(target && target.type === 'image'){
         prepareCrop(target);
@@ -161,7 +161,7 @@ event_handlers["init-cropper"] = (id, value, event_name) => {
     });
     }
 
-    function cropImage(i, e){  
+    function cropImage(i, e){
         canvas.remove(i);
 
         var s = (i.left - e.left) / e.scaleX,
@@ -186,11 +186,11 @@ event_handlers["init-cropper"] = (id, value, event_name) => {
         croppedImageUrl = URL.createObjectURL(blob);
         canvas.renderAll();
     }
-    
+
     doneButton.addEventListener('click', function() {
         clientEmit("doneButton", croppedImageUrl, "cropper-done");
     });
-    
+
     // Function to convert data URI to Blob
     function dataURItoBlob(dataURI) {
         var byteString = atob(dataURI.split(',')[1]);
@@ -202,8 +202,5 @@ event_handlers["init-cropper"] = (id, value, event_name) => {
         }
         return new Blob([ab], { type: mimeString });
     }
-    
+
 }
-
-
-

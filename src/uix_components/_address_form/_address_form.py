@@ -3,22 +3,28 @@ import json
 import uix
 from uix.elements import row, col, input, button, div
 from uix_components import basic_checkbox, basic_datalist
-from uix import T
+from uix import T, app
 
-uix.html.add_css_file("_address_form.css",__file__)
+app.serve_module_static_files(__file__)
 
 base_path = os.path.dirname(__file__)
-def setup_json_files():
-		with open(os.path.join(base_path, 'address.json'), "r", encoding='utf-8') as address_json:
-				address_data = json.loads(address_json.read())
 
-		with open(os.path.join(base_path, 'ulke.json'), "r", encoding='utf-8') as country_json:
-				countries = json.loads(country_json.read())
-		
-		return address_data, countries
+def setup_json_files():
+    with open(os.path.join(base_path, 'address.json'), "r", encoding='utf-8') as address_json:
+        address_data = json.loads(address_json.read())
+
+    with open(os.path.join(base_path, 'ulke.json'), "r", encoding='utf-8') as country_json:
+        countries = json.loads(country_json.read())
+
+    return address_data, countries
 
 address_data, countries = setup_json_files()
 
+def register_resources(cls):
+    cls.register_style("adress_form_css", "/_address_form/_address_form.css", is_url=True)
+    return cls
+
+@register_resources
 class address_form(uix.Element):
     def __init__(self, id=None, callback=None):
         super().__init__(id=id)
@@ -41,9 +47,9 @@ class address_form(uix.Element):
                     self.turkey_addressFormat = turkey_addressFormat
                     with row().style("height", "max-content"):
                         options_city = {key: key for key in address_data}
-                        self.city_datalist = basic_datalist(name="", id="cities", options = options_city, placeholder=T("Select City"), callback=self.get_counties).style("width", "100%")                  
+                        self.city_datalist = basic_datalist(name="", id="cities", options = options_city, placeholder=T("Select City"), callback=self.get_counties).style("width", "100%")
                         options_county = {"Select County": "Select County"}
-                        self.counties_datalist = basic_datalist(name="", id="counties", options=options_county, placeholder=T("Select County"), callback=self.get_neighborhoods).style("width", "100%")                      
+                        self.counties_datalist = basic_datalist(name="", id="counties", options=options_county, placeholder=T("Select County"), callback=self.get_neighborhoods).style("width", "100%")
                     with row().style("height", "max-content"):
                         options_neighborhoods = {T("Select Neighborhood"): T("Select Neighborhood")}
                         self.neighborhoods = basic_datalist(name="",id="neighborhoods",options=options_neighborhoods, placeholder=T("Select Neighborhood") ,callback=self.set_neighborhoods)
@@ -61,7 +67,7 @@ class address_form(uix.Element):
                     self.personalButton = button(T("Personal")).cls("personal-button").on("click", self.personal_click)
                     self.corporateButton = button(T("Corporate")).cls("cancel-button").on("click", self.corporate_click)
                 with col(id="corporate").cls("hidden adress-grid") as corporate:
-                    self.corporate = corporate           
+                    self.corporate = corporate
                     with row().style("height", "max-content"):
                         self.vkn = input(placeholder=T("Tax Number")).on("change", self.input_setter)
                         self.companyName = input(placeholder=T("Company Name")).on("change", self.input_setter)
@@ -135,7 +141,7 @@ class address_form(uix.Element):
         with content:
             self.counties = basic_datalist(name="", id="counties", placeholder=T("Select County"), required=True, options=countiesData, callback=self.get_neighborhoods)
         content.update()
-        
+
     def get_neighborhoods(self, ctx, id, value):
         value_ = value.upper()
         if self.selected_city_counties != None:

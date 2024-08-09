@@ -1,18 +1,18 @@
-import uix
-from uix.elements import text, image, div 
+from uix import Element
+from uix.elements import text, image, div
 
-uix.html.add_css("loading-component-css", """
+style = """
 @keyframes loading-bar {
     0% {
         width: 0%;
         background-color: #00573d;
     }
-    
+
     100% {
         background-color: #333333;
         width: 100%;
     }
-}         
+}
 
 @keyframes ping-black {
     0% {
@@ -24,7 +24,7 @@ uix.html.add_css("loading-component-css", """
     100% {
         opacity: 0.7;
     }
-}   
+}
 
 .logo-div {
     position: absolute;
@@ -33,7 +33,7 @@ uix.html.add_css("loading-component-css", """
     height: 30%;
     width: 20%;
 }
-                 
+
 .loading-logo {
     height: 100%;
     object-fit: contain;
@@ -42,12 +42,17 @@ uix.html.add_css("loading-component-css", """
 
 .hidden {
     display: none;
-}
-""")
-class basic_loading(uix.Element):
+}"""
+
+def register_resources(cls):
+    cls.register_style("loading_component_css", style)
+    return cls
+
+@register_resources
+class basic_loading(Element):
     def __init__(self, value = None, id = None, timer = 10):
         super().__init__(value, id = id)
-        self.cls("wall hall").style("position: relative;")    
+        self.cls("wall hall").style("position: relative;")
 
         with self:
             with div().cls("hall")as loading:

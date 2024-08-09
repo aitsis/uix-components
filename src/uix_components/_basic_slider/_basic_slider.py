@@ -1,17 +1,18 @@
-import uix
+from uix import Element
 from uix.elements import slider, input, row, text, datalist, option, div
 
-uix.html.add_script("slider","""
-    event_handlers["init-slider"] = function(id, value, event_name) {
-        document.getElementById(value.sliderID).addEventListener("input", function(e) {
-            document.getElementById(value.inputID).value = e.target.value;
-        });
-        document.getElementById(value.inputID).addEventListener("change", function(e) {
-            document.getElementById(value.sliderID).value = e.target.value;
-        });
-    };
-""",False)
-uix.html.add_css("basic_slider_css","""
+script = """
+event_handlers["init-slider"] = function(id, value, event_name) {
+    document.getElementById(value.sliderID).addEventListener("input", function(e) {
+        document.getElementById(value.inputID).value = e.target.value;
+    });
+    document.getElementById(value.inputID).addEventListener("change", function(e) {
+        document.getElementById(value.sliderID).value = e.target.value;
+    });
+};
+"""
+
+style = """
 .basic-slider {
     display: flex;
     justify-content: space-between;
@@ -25,24 +26,31 @@ uix.html.add_css("basic_slider_css","""
     text-align: center;
 }
 .datalist-slider {
-    display: flex; 
-    width: 95%; 
-    position: relative; 
-    margin-top: 0.2rem; 
-    margin-left: auto; 
-    margin-bottom:1rem; 
+    display: flex;
+    width: 95%;
+    position: relative;
+    margin-top: 0.2rem;
+    margin-left: auto;
+    margin-bottom:1rem;
 }
 .datalist-slider option {
-    text-align: center; 
-    transform: translateX(-50%); 
-    font-size: smaller; 
-    position: absolute;  
-}      
-""")
+    text-align: center;
+    transform: translateX(-50%);
+    font-size: smaller;
+    position: absolute;
+}
+"""
+
 max_fn = max
 min_fn = min
 
-class basic_slider(uix.Element):
+def register_resources(cls):
+    cls.register_script("basic_slider_script", script)
+    cls.register_style("basic_slider_style", style)
+    return cls
+
+@register_resources
+class basic_slider(Element):
     def __init__(self,name, id = None, min = 0, max = 100, value = 50, step = 1,callback = None, list = None, data_list = None):
         super().__init__("",id = id)
         self.sliderID = id + "-slider"
@@ -76,7 +84,7 @@ class basic_slider(uix.Element):
     def on_slider_change(self,ctx, id, value):
         if self.callback:
             self.callback(ctx, id, value)
-       
+
     def init(self):
         print("basic_slider init")
         self.session.queue_for_send("init-slider", {"sliderID": self.sliderID, "inputID": self.inputID},"init-slider")

@@ -1,19 +1,19 @@
 import io
 from uuid import uuid4
-import uix
 import os
 from PIL import Image
+from uix import Element, app
 
-base_path = os.path.dirname(__file__)
-public_path = os.path.join(base_path, "public")
+app.serve_module_static_files(__file__)
 
-uix.html.add_header_item("seadragon", '<script src="/seadragon/openseadragon.min.js"></script>')
-uix.html.add_header_item("interactive_seadragon", '<script src="/seadragon/openseadragon-fabricjs-overlay.js"></script>')
-uix.html.add_script_source('seadragon', 'seadragon.js',localpath=os.path.join(public_path, "seadragon.js"), beforeMain=False)
+def register_resources(cls):
+    cls.register_script("seadragon-lib", "/_image_viewer/openseadragon.min.js", is_url=True)
+    cls.register_script("seadragon-js", "/_image_viewer/seadragon.js", is_url=True)
+    cls.register_script("interactive_seadragon", "/_image_viewer/openseadragon-fabricjs-overlay.js", is_url=True)
+    return cls
 
-uix.app.add_static_route("seadragon", public_path)
-
-class image_viewer(uix.Element):
+@register_resources
+class image_viewer(Element):
     def __init__(self, id = None, value=None, buttonGroup=None, zoom=False, size=(500,500), isInteractive=False):
         super().__init__(id=id, value=value)
         self.tag = "div"
@@ -23,7 +23,7 @@ class image_viewer(uix.Element):
             "zoom":  zoom,
             "image": value,
         }
-        
+
         if buttonGroup is not None:
             self.config["buttonGroup"] = buttonGroup
 
@@ -50,7 +50,7 @@ class image_viewer(uix.Element):
         else:
             self.has_PIL_image = False
             self._value = value
-            
+
         if self._value is not None:
             if self.set_later:
                 self.session.queue_for_send(self.id, self.value_to_command("open",{"type": "image","url": self._value}), self.viewer)
@@ -60,7 +60,7 @@ class image_viewer(uix.Element):
 
     def __del__(self):
         if self.has_PIL_image:
-            uix.app.files[self.id] = None
+            app.files[self.id] = None
 
     def _create_image_url(self,img):
         if self.id is None:
@@ -68,9 +68,9 @@ class image_viewer(uix.Element):
         temp_data = io.BytesIO()
         img.save(temp_data, format="png")
         temp_data.seek(0)
-        uix.app.files[self.id] = {"data":temp_data.read(),"type":"image/png"}
+        app.files[self.id] = {"data":temp_data.read(),"type":"image/png"}
         return "/download/"+self.id + "?" + str(uuid4())
-    
+
     def value_to_command(self,command,value):
         return { "action": command, "value": value }
 
@@ -83,10 +83,10 @@ class image_viewer(uix.Element):
 
     def home(self):
         self.session.send(self.id, self.value_to_command("home", None), "seadragon")
-    
+
     def fullscreen(self):
         self.session.send(self.id, self.value_to_command("fullscreen", None), "seadragon")
-    
+
     def download(self):
         self.session.send(self.id, self.value_to_command("download", None), "seadragon")
 
@@ -96,7 +96,7 @@ class image_viewer(uix.Element):
     def edit_brush(self, color,opacity, brushSize):
         brushSize = int(brushSize)
         self.session.send(self.id, self.value_to_command("editBrush", {"color": color, "opacity": opacity, "brushSize": brushSize}), "interactive-seadragon")
-   
+
 
     def set_pan_mode(self):
         self.session.send(self.id, self.value_to_command("setPanMode", None), "interactive-seadragon")
@@ -104,5 +104,3 @@ class image_viewer(uix.Element):
     def eraser_tool(self, brushSize, value=None):
         brushSize = int(brushSize)
         self.session.send(self.id, self.value_to_command("eraserBrush", {"brushSize": brushSize, "isChecked": value}), "interactive-seadragon")
-
-    

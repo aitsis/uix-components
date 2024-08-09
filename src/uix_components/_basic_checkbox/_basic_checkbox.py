@@ -1,15 +1,20 @@
-import uix
+from uix import Element
 from uix.elements import check, label
 
-uix.html.add_css("checkbox.css","""
-    .checkbox-container{
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 5px;
-    }""")
+checkbox_css = """
+.checkbox-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}"""
 
-class basic_checkbox(uix.Element):
+def register_resources(cls):
+    cls.register_style("checkbox_css", checkbox_css)
+    return cls
+
+@register_resources
+class basic_checkbox(Element):
     def __init__(
             self,
             id=None,

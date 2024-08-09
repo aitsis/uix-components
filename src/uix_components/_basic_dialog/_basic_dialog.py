@@ -1,8 +1,6 @@
-import uix
 from uix.elements import col, button, dialog, icon, row, text
 
-uix.html.add_css("dialog.css","""
-
+style = """
     .dialog-container{
         width: 60vw;
         height: 80vh;
@@ -20,24 +18,27 @@ uix.html.add_css("dialog.css","""
         padding: 0;
     }
     .dialog-header{
-                 height: 5%;
-                 justify-content: space-between;
-                    align-items: center;}
-                 
-""")
+      height: 5%;
+      justify-content: space-between;
+        align-items: center;
+}"""
 
+def register_resources(cls):
+    cls.register_style("basic_dialog_css", style)
+    return cls
+
+@register_resources
 class basic_dialog(dialog):
     def __init__(self,
                 id=None,
                 elements=None,
-                close_on_outside = True, 
+                close_on_outside = True,
                 close_icon = None,
                 close_callback = None,
                 title = None,
                 **kwargs
                 ):
         super().__init__(id=id, **kwargs)
-        
         self.close_on_outside = close_on_outside
         self.dialog_elements = elements
         self.btnID = id + "-btn"

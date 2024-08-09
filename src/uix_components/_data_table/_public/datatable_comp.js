@@ -32,9 +32,9 @@ event_handlers["init-data-table"] = function (id, value, event_name) {
         columns: value.columns,
         columnDefs: [],
         pageLength: 20,
-        
+
     };
-    
+
     dataTable_config = Object.assign(dataTable_config, value.dataTable_config);
 
     const table=new DataTable("#"+id, dataTable_config);
@@ -50,7 +50,7 @@ event_handlers["init-data-table"] = function (id, value, event_name) {
                 "data": data,
                 "index": index,
             }, "info_dialog_open");
-           
+
     })
     }
 
@@ -64,16 +64,16 @@ event_handlers["reload"] = function (id, value, event_name) {
     const currentPage = table.page();
 
     tableData = value.data;
-        
+
     table.clear().rows.add(tableData).draw();
     table.page(currentPage).draw(false);
     editableRow(id);
 }
 
 function editableRow(id,table){
-        const rows=document.querySelectorAll("#"+id+" > tbody > tr");    
+        const rows=document.querySelectorAll("#"+id+" > tbody > tr");
         rows.forEach(row => {
             row.style.cursor = 'pointer';
         });
-        
+
 }

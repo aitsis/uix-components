@@ -1,10 +1,14 @@
-import uix
-import os
+from uix import app
 from uix.elements import span, div
 
-uix.html.add_css_file("_tooltip.css",__file__)
-
 print("Imported: tooltip")
+app.serve_module_static_files(__file__)
+
+def register_resources(cls):
+    cls.register_style("_tooltip_css", "/_tooltip/_tooltip.css", is_url=True)
+    return cls
+
+@register_resources
 class tooltip(span):
     def __init__(self,value:str = None,id:str = None, position="top"):
         super().__init__(value, id = id)
@@ -32,4 +36,3 @@ sample = """
 with text('Bu nedir?'):
     tooltip("Tooltip içeriğidir.")
 """
-        

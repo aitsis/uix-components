@@ -1,18 +1,17 @@
-from uix.elements import table, tr, th, td, div, button, input, span,thead, tbody,icon
-from uix import T
+from uix import Element, app, T
 from uix.core.session import context
-import types
-import uix
-import json
-import html
+from uix.elements import table, tr, th, td, div, button, input, span,thead, tbody,icon
 
+app.serve_module_static_files(__file__)
 
-uix.html.add_css_file('datatables.css', __file__)
-uix.html.add_script_source('data-table-js', 'datatables.min.js', localpath=__file__)
-uix.html.add_script_source('data-table-init-js', 'datatable_comp.js', localpath=__file__, beforeMain=False)
+def register_resources(cls):
+    cls.register_style("datatables_css", "/_data_table/datatables.css", is_url=True)
+    cls.register_script("data-table-js", "/_data_table/datatables.min.js", is_url=True)
+    cls.register_script("data-table-init-js", "/_data_table/datatable_comp.js", is_url=True)
+    return cls
 
-
-class data_table(uix.Element):
+@register_resources
+class data_table(Element):
     def __init__(self, id=None, data=[],cols=None,dialog_id=None,callback=None,config=None):
         super().__init__(id=id)
         columns = []
@@ -24,11 +23,11 @@ class data_table(uix.Element):
             "dialog_id": dialog_id,
             "isEditable": False
         }
-        
+
         if callback and dialog_id:
             self.config["isEditable"] = True
             context.session.context.elements[dialog_id].on("info_dialog_open", callback)
-        
+
         with self:
             with table(id=self.id + "-table",value="").cls("stripe hover"):
                 with thead():
@@ -42,8 +41,8 @@ class data_table(uix.Element):
                                 columns.append({"data": key})
                                 th(T(key))
 
-                        
-                    
+
+
     def init(self):
         self.session.send(self.id+"-table", self.config ,"init-data-table")
 

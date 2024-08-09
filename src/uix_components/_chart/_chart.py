@@ -2,9 +2,14 @@ import random
 import uix
 from uix.elements import canvas, row, button, div
 
-uix.html.add_script_source('chart.umd.js', 'chart.umd.js',localpath=__file__, beforeMain=False)
-uix.html.add_script_source('chart-js', 'chart.js',localpath=__file__, beforeMain=False)
+uix.app.serve_module_static_files(__file__)
 
+def register_resources(cls):
+    cls.register_script("chart-js-umd", "/_chart/chart.umd.js", is_url=True)
+    cls.register_script("chart-js", "/_chart/chart.js", is_url=True)
+    return cls
+
+@register_resources
 class chart(uix.Element):
     def __init__(self, id, type = "line", value=None):
         super().__init__(id=id, value=None)
@@ -87,16 +92,16 @@ if __name__ == "__main__":
                     "data": scatter_data2,
                     "backgroundColor": 'rgb(255, 199, 132)'
                 }],
-                
+
             }
         }]
-    
+
 
     def update(ctx,id,value):
         global chart_index
         chart_index = int(id[-2:])
         print("update",chart_index)
-        
+
         ctx.elements["chart1"].value = charts[chart_index]
 
 

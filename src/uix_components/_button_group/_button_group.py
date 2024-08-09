@@ -1,15 +1,19 @@
+from uix import app, Element
 from uix.elements import row, button, icon, text,link
-import uix
 
-uix.html.add_css_file("_button_group.css",__file__)
+app.serve_module_static_files(__file__)
 
+def register_resources(cls):
+    cls.register_style("_button_group_css", "/_button_group/_button_group.css", is_url=True)
+    return cls
+
+@register_resources
 class button_group(row):
     def __init__(self,
             id=None,
             items:dict=None,
             **kwargs):
         super().__init__( id=id  ,**kwargs)
-
         self.cls("row-group")
         self.style("width","fit-content !important").style("display","flex")
         with self:
@@ -57,6 +61,6 @@ class button_group(row):
 
     def hide(self):
         self.set_style("display","none")
-        
+
     def show(self):
         self.set_style("display","flex")
