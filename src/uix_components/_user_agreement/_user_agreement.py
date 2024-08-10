@@ -4,7 +4,7 @@ from uix.elements import row, col, button
 app.serve_module_static_files(__file__)
 
 def register_resources(cls):
-    cls.register_script("_user_agreement.css", "/_user_agreement/_user_agreement.css", is_url=True)
+    cls.register_style("_user_agreement.css", "/_user_agreement/_user_agreement.css", is_url=True)
     cls.register_script("useragreement-js", "/_user_agreement/_user_agreement.js", is_url=True)
     return cls
 
