@@ -8,7 +8,7 @@
     display      : block;
     position     : relative;
     padding-left : calc(2 * var(--spacing) - var(--radius) - 2px);
-
+    background-color: transparent;
   }
 
   .tree ul{
