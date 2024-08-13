@@ -10,7 +10,7 @@ def register_resources(cls):
     cls.register_script("seadragon-lib", "/_image_viewer/openseadragon.min.js", is_url=True)
     cls.register_script("seadragon-js", "/_image_viewer/seadragon.js", is_url=True)
     cls.register_script("interactive_seadragon", "/_image_viewer/openseadragon-fabricjs-overlay.js", is_url=True)
-    cls.register_script("fabric-js-local", "/_image_viewer/fabric.min.js", is_url=True)
+    cls.register_script("fabric-js-local", "/_fabric/fabric.min.js", is_url=True)
     
     return cls
 
