@@ -15,26 +15,27 @@ class button_group(row):
             **kwargs):
         super().__init__( id=id  ,**kwargs)
         self.cls("row-group")
-        self.style("width","fit-content !important").style("display","flex")
+        self.style("width","fit-content !important").style("display","flex").style("position","absolute")
         with self:
-            for key, value in items.items():
-                row_styles = value.get("row_styles", {})
-                for row_style_key, row_style_value in row_styles.items():
-                    self.style(row_style_key, row_style_value)
-                row_classes = value.get("row_classes")
-                self.cls(row_classes)
+            with row().style("gap","0.5rem"):
+                for key, value in items.items():
+                    row_styles = value.get("row_styles", {})
+                    for row_style_key, row_style_value in row_styles.items():
+                        self.style(row_style_key, row_style_value)
+                    row_classes = value.get("row_classes")
+                    self.cls(row_classes)
 
-                self.btn_id = value.get("btn_id")
-                if value.get("link") is not None:
-                    with link("",id=self.btn_id,href=value.get("link")) as _link:
-                        self.link=_link
-                        self.link.cls(value.get("btn_classes"))
-                        if value.get("download") is True:
-                            name=value.get("link").split("/")[-1]
-                            self.link.attrs["download"]=name
-                        self.get_buttonGroup(value)
-                else:
-                        self.get_buttonGroup(value)
+                    self.btn_id = value.get("btn_id")
+                    if value.get("link") is not None:
+                        with link("",id=self.btn_id,href=value.get("link")) as _link:
+                            self.link=_link
+                            self.link.cls(value.get("btn_classes"))
+                            if value.get("download") is True:
+                                name=value.get("link").split("/")[-1]
+                                self.link.attrs["download"]=name
+                            self.get_buttonGroup(value)
+                    else:
+                            self.get_buttonGroup(value)
     def get_buttonGroup(self, value):
         with button("",id=self.btn_id).cls("btn-group") as btn:
             if value.get("onClick") is not None:
