@@ -10,20 +10,22 @@ def register_resources(cls):
     cls.register_script("seadragon-lib", "/_image_viewer/openseadragon.min.js", is_url=True)
     cls.register_script("seadragon-js", "/_image_viewer/seadragon.js", is_url=True)
     cls.register_script("interactive_seadragon", "/_image_viewer/openseadragon-fabricjs-overlay.js", is_url=True)
+    cls.register_script("fabric-js-local", "/_fabric/fabric.min.js", is_url=True)
+    
     return cls
 
 @register_resources
 class image_viewer(Element):
-    def __init__(self, id = None, value=None, buttonGroup=None, zoom=False, size=(500,500), isInteractive=False):
+    def __init__(self, id = None, value=None, buttonGroup=None, zoom=False, size=(500,500), viewer="seadragon", button_groupId=None):
         super().__init__(id=id, value=value)
         self.tag = "div"
         self.value_name = None
-
+        self.viewer = viewer
         self.config = {
             "zoom":  zoom,
             "image": value,
+            "buttonGroupId": button_groupId
         }
-
         if buttonGroup is not None:
             self.config["buttonGroup"] = buttonGroup
 
@@ -32,7 +34,6 @@ class image_viewer(Element):
 
         self.has_PIL_image = False
         self.set_later = True
-        self.viewer = "seadragon" if not isInteractive else "interactive-seadragon"
 
     def init(self):
         self.session.queue_for_send(self.id, self.config, "init-" + self.viewer)
@@ -76,31 +77,31 @@ class image_viewer(Element):
 
 
     def zoom_in(self):
-        self.session.send(self.id, self.value_to_command("zoomIn", None), "seadragon")
+        self.session.send(self.id, self.value_to_command("zoomIn", None), self.viewer) 
 
     def zoom_out(self):
-        self.session.send(self.id, self.value_to_command("zoomOut", None), "seadragon")
+        self.session.send(self.id, self.value_to_command("zoomOut", None), self.viewer)                          
 
     def home(self):
-        self.session.send(self.id, self.value_to_command("home", None), "seadragon")
+        self.session.send(self.id, self.value_to_command("home", None), self.viewer)
 
     def fullscreen(self):
-        self.session.send(self.id, self.value_to_command("fullscreen", None), "seadragon")
+        self.session.send(self.id, self.value_to_command("fullscreen", None), self.viewer)
 
     def download(self):
-        self.session.send(self.id, self.value_to_command("download", None), "seadragon")
+        self.session.send(self.id, self.value_to_command("download", None), self.viewer)
 
     def open_edit_area(self, value):
-        self.session.send(self.id, self.value_to_command("open-edit-area", value), "interactive-seadragon")
+        self.session.send(self.id, self.value_to_command("open-edit-area", value), self.viewer)
 
     def edit_brush(self, color,opacity, brushSize):
         brushSize = int(brushSize)
-        self.session.send(self.id, self.value_to_command("editBrush", {"color": color, "opacity": opacity, "brushSize": brushSize}), "interactive-seadragon")
+        self.session.send(self.id, self.value_to_command("editBrush", {"color": color, "opacity": opacity, "brushSize": brushSize}), self.viewer)
 
 
     def set_pan_mode(self):
-        self.session.send(self.id, self.value_to_command("setPanMode", None), "interactive-seadragon")
+        self.session.send(self.id, self.value_to_command("setPanMode", None), self.viewer)
 
     def eraser_tool(self, brushSize, value=None):
         brushSize = int(brushSize)
-        self.session.send(self.id, self.value_to_command("eraserBrush", {"brushSize": brushSize, "isChecked": value}), "interactive-seadragon")
+        self.session.send(self.id, self.value_to_command("eraserBrush", {"brushSize": brushSize, "isChecked": value}), self.viewer)

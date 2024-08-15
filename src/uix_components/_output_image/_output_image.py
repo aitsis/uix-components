@@ -1,23 +1,45 @@
 import uix
 from uix.elements import div
 from uix import T
-from uix_components import image_viewer, fabric, button_group
+from uix_components import image_viewer, button_group,fabric
 from ._output_loading import output_loading
+from uix.core.session import context
 
 
 buttonGroupConfig = {
             "seadragon": {
-                "Zoom in": {"icon": "fa-search-plus", "icon_styles": {"font-size": "20px", "color": "var(--ait)"}},
-                "Zoom out": {"icon": "fa-search-minus", "icon_styles": {"font-size": "20px", "color": "var(--ait)"}},
-                "Home": {"icon": "fa-home", "icon_styles": {"font-size": "20px", "color": "var(--ait)"}},
-                "Full screen": {"icon": "fa-expand", "icon_styles": {"font-size": "20px", "color": "var(--ait)"}},
-                "Download": {"icon": "fa-download", "icon_styles": {"font-size": "20px", "color": "var(--ait)"}},
-                "Save": {"icon": "fa-solid fa-floppy-disk", "icon_styles": {"font-size": "20px", "color": "var(--ait)"}},
-                "Send to input": {"icon": "fa-arrow-left", "icon_styles": {"font-size": "20px", "color": "var(--ait)"}},
+                "Zoom in": {"id": "zoom-in",
+                            "icon": "fa-solid fa-search-plus", 
+                            "icon_styles": {"font-size": "20px", "color": "var(--ait)"}},
+                "Zoom out": {
+                            "id": "zoom-out",
+                            "icon": "fa-solid fa-search-minus", 
+                            "icon_styles": {"font-size": "20px", "color": "var(--ait)"}},
+                "Home ": {
+                            "id": "home",
+                            "icon": "fa-solid fa-home", 
+                            "icon_styles": {"font-size": "20px", "color": "var(--ait)"}},
+                "Full screen": {
+                                "id": "full-screen",
+                                "icon": "fa-solid fa-expand", 
+                                "icon_styles": {"font-size": "20px", "color": "var(--ait)"}},
+                "Download": {   
+                                "id": "download",
+                                "icon": "fa-solid fa-download", 
+                                "icon_styles": {"font-size": "20px", "color": "var(--ait)"}},
+                "Save": {
+                            "id": "save",
+                            "icon": "fa-solid fa-floppy-disk", 
+                            "icon_styles": {"font-size": "20px", "color": "var(--ait)"}},
+                "Send to input": {  
+                                    "btn_id": "send-to-input",  
+                                    "icon": "fa-solid fa-arrow-left", 
+                                    "icon_styles": {"font-size": "20px", "color": "var(--ait)"}},
             },
             "fabric": {
                 "Download": {"icon": "fa-solid fa-download", "icon_styles": {"font-size": "20px", "color": "var(--ait)"},"link":"my_images/AIT_AI_LOGO.png", "download":True},
-                "Save": {"icon": "fa-solid fa-floppy-disk", "icon_styles": {"font-size": "20px", "color": "var(--ait)"}, "onClick": ""},
+                "Save": {"icon": "fa-solid fa-floppy-disk", 
+                         "icon_styles": {"font-size": "20px", "color": "var(--ait)"}},
             }
         }
 class output_image(uix.Element):
@@ -52,8 +74,17 @@ class output_image(uix.Element):
             self.output_loading = output_loading(id=self.loading_id).cls("wall hall hidden")
 
     def create_image_viewer(self, image_url):
-        self.image_viewer = image_viewer(id=self.viewer_id, value=image_url, buttonGroup=buttonGroupConfig["seadragon"]).size("100%", "100%").cls("opacity-30")
-        self.image_viewer.on("button_click", self.on_click)
+        
+        buttonGroupConfig["seadragon"]["Zoom in"]["onClick"] = lambda ctx, id, value, key="Zoom in": self.on_click(ctx, id, key)
+        buttonGroupConfig["seadragon"]["Zoom out"]["onClick"] = lambda ctx, id, value, key="Zoom out": self.on_click(ctx, id, key)
+        buttonGroupConfig["seadragon"]["Home "]["onClick"] = lambda ctx, id, value, key="Home": self.on_click(ctx, id, key)
+        buttonGroupConfig["seadragon"]["Full screen"]["onClick"] = lambda ctx, id, value, key="Full Screen": self.on_click(ctx, id, key)
+        buttonGroupConfig["seadragon"]["Download"]["onClick"] = lambda ctx, id, value, key="Download": self.on_click(ctx, id, key)
+        buttonGroupConfig["seadragon"]["Send to input"]["onClick"] = lambda ctx, id, value, key="Send to input": self.on_click(ctx, id, key)
+        buttonGroupConfig["seadragon"]["Save"]["onClick"] = lambda ctx, id, value, key="Save": self.on_click(ctx, id, key)
+
+        button_group(items=buttonGroupConfig["seadragon"], id=self.viewer_id + "-button-group")
+        self.image_viewer = image_viewer(id=self.viewer_id, value=image_url,button_groupId = self.viewer_id+"-button-group").size("100%", "100%").cls("opacity-30")
 
     def create_fabric_viewer(self, image_url):
         self.image_viewer = fabric(id=self.viewer_id, value=image_url).size("100%", "100%").cls("opacity-30")

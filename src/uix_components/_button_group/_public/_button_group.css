@@ -3,9 +3,11 @@
     padding: 5px;
     background-color: rgba(0, 0, 0, 0.8);
     border-radius: 5px;
-    height: fit-content;
+    height: 2vh;
     min-width: 0px !important;
     gap: 5px;
+    position: absolute !important;
+    z-index: 4;
 }
 
 .btn-group {

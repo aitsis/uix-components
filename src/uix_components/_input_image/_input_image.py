@@ -4,36 +4,36 @@ from uix_components import basic_slider, basic_checkbox
 from uix_components import image_viewer, fabric, button_group
 
 buttonGroupConfig = {
-        "seadragon": {
-            "Delete": {
-                "icon": "fa-solid fa-trash-can",
-                "icon_styles": {"font-size": "20px", "color": "var(--danger-color)"},
+            "seadragon": {
+                "Delete": {
+                    "icon": "fa-solid fa-trash-can",
+                    "icon_styles": {"font-size": "20px", "color": "var(--danger-color)"},
+                },
             },
-        },
-        "fabric": {
-            "Delete": {
-                "icon": "fa-solid fa-trash-can",
-                "icon_styles": {"font-size": "20px", "color": "var(--danger-color)"},
-                "onClick": "",
+            "fabric": {
+                "Delete": {
+                    "icon": "fa-solid fa-trash-can",
+                    "icon_styles": {"font-size": "20px", "color": "var(--danger-color)"},
+                },
+            
             },
-        },
-        "interactive_imageViewer": {
-            "Delete": {
-                "icon": "fa-solid fa-trash-can",
-                "icon_styles": {"font-size": "20px", "color": "var(--danger-color)"},
-            },
-            "Edit": {
-                "icon": "fa-solid fa-pencil",
-                "icon_styles": {"font-size": "20px", "color": "var(--ait)"},
-            },
-            "Change Canvas": {
-                "icon": "fa-solid fa-refresh",
-                "icon_styles": {"font-size": "20px", "color": "var(--ait)"},
-            },
-            "Pan Mode": {
-                "icon": "fa-solid fa-hand",
-                "icon_styles": {"font-size": "20px", "color": "var(--ait)"},
-            },
+           "interactive_imageViewer": {
+                "Delete": {
+                    "icon": "fa-solid fa-trash-can",
+                    "icon_styles": {"font-size": "20px", "color": "var(--danger-color)"},
+                },
+                "Edit": {
+                    "icon": "fa-solid fa-pencil",
+                    "icon_styles": {"font-size": "20px", "color": "var(--ait)"},
+                },
+                "Change Canvas": {
+                    "icon": "fa-solid fa-refresh",
+                    "icon_styles": {"font-size": "20px", "color": "var(--ait)"},
+                },
+                "Pan Mode": {
+                    "icon": "fa-solid fa-hand",
+                    "icon_styles": {"font-size": "20px", "color": "var(--ait)"},
+                },
 
 
     }
@@ -132,10 +132,12 @@ class input_image(Element):
             ctx.elements["comp_alert"].open("alert-danger", T("File upload failed."))
 
     def create_image_viewer(self, image_url):
-        with row(id=self.id + "canvas-container") as canvas_container:
-            self.canvas_container = canvas_container
-            self.dropzone_image = image_viewer(id=self.viewer_id, value=image_url, buttonGroup=buttonGroupConfig["seadragon"]).size("100%", "100%")
-        self.canvas_container.style("visibility", "hidden")
+        with col(id=self.id + "canvas-container") as canvas_container:
+            buttonGroupConfig["seadragon"]["Delete"]["onClick"] = self.resetImage
+            button_group(items=buttonGroupConfig["seadragon"], id=self.viewer_id + "-button-group").cls("button-group")
+            self.canvas_container = canvas_container 
+            self.dropzone_image = image_viewer(id=self.viewer_id, value=image_url,viewer=self.viewer, button_groupId = self.viewer_id+"-button-group").size("100%", "100%")
+        self.canvas_container.style("visibility", "hidden") 
         self.dropzone_image.on("button_click", self.on_button_click)
         self.dropzone_image.style("display: none ; z-index: 3")
 
@@ -153,9 +155,13 @@ class input_image(Element):
                 self.opacity = basic_slider(id=self.id + "-opacity", name=T("Opacity") ,min=0, max=1, step=0.1, value=1, callback=self.on_slider_change)
 
         with row(id=self.id + "canvas-container") as canvas_container:
+            buttonGroupConfig["interactive_imageViewer"]["Delete"]["onClick"] = lambda ctx, id, value, key = "Delete": self.on_button_click(ctx, id, key)
+            buttonGroupConfig["interactive_imageViewer"]["Edit"]["onClick"] = lambda ctx, id, value, key = "Edit": self.on_button_click(ctx, id, key)
+            buttonGroupConfig["interactive_imageViewer"]["Pan Mode"]["onClick"] = lambda ctx, id, value, key = "Pan Mode": self.on_button_click(ctx, id, key)
+            buttonGroupConfig["interactive_imageViewer"]["Change Canvas"]["onClick"] = lambda ctx, id, value, key = "Change Canvas": self.on_button_click(ctx, id, key)
+            button_group(items=buttonGroupConfig["interactive_imageViewer"], id=self.viewer_id + "-button-group").cls("button-group")
             self.canvas_container = canvas_container
-            self.dropzone_image = image_viewer(id=self.viewer_id, value=image_url, buttonGroup=buttonGroupConfig["interactive_imageViewer"],isInteractive=True).size("100%", "100%")
-
+            self.dropzone_image = image_viewer(id=self.viewer_id, value=image_url, viewer=self.viewer, button_groupId = self.viewer_id+"-button-group").size("100%", "100%")     
         self.file.style("display", "none")
         self.dropzone_parent.style("display", "none")
         self.canvas_container.style("visibility", "visible")
