@@ -9,10 +9,9 @@ class basic_select(select):
             callback=None,
             **kwargs
         ):
-        super().__init__( id=id, **kwargs)
+        super().__init__( id=id, value=value, **kwargs)
         self.options = options
         self.callback = callback
-        self.value = value
 
         with self.on("change", self.on_change):    
             if type(self.options) == list:
