@@ -50,13 +50,17 @@ event_handlers["init-data-table"] = function (id, value, event_name) {
                 "data": data,
                 "index": index,
             }, "info_dialog_open");
-
-    })
+        })
     }
-
-
-
-
+    table.on('page.dt', function () {
+        var info = table.page.info();
+        clientEmit(id.replace("-table", ""), {
+            "data": {
+                page: info.page + 1,
+                pageLength: 20
+            }
+        }, "update_data_table");
+    })
 }
 
 event_handlers["reload"] = function (id, value, event_name) {
