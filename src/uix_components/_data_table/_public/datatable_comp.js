@@ -32,6 +32,7 @@ event_handlers["init-data-table"] = function (id, value, event_name) {
         columns: value.columns,
         columnDefs: [],
         pageLength: 20,
+        ordering: false,
 
     };
 
