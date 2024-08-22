@@ -32,13 +32,15 @@ event_handlers["init-data-table"] = function (id, value, event_name) {
         columns: value.columns,
         columnDefs: [],
         pageLength: 20,
-        ordering: false,
+        ordering: true,
 
     };
 
     dataTable_config = Object.assign(dataTable_config, value.dataTable_config);
 
     const table=new DataTable("#"+id, dataTable_config);
+    table.order([]).draw();
+
 
     document.getElementById(id).table = table;
     if (value.isEditable) {
@@ -62,6 +64,7 @@ event_handlers["init-data-table"] = function (id, value, event_name) {
             }
         }, "update_data_table");
     })
+    
 }
 
 event_handlers["reload"] = function (id, value, event_name) {
