@@ -11,6 +11,7 @@ script = """
 """
 
 def register_resources(cls):
+    cls.register_script("chart-js-umd", "/_chart/chart.umd.js", is_url=True)
     cls.register_script("chart-js", script)
     return cls
 

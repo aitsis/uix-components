@@ -11,6 +11,7 @@ event_handlers["init-chart"] = function (id, value, event_name) {
 """
 
 def register_resources(cls):
+    cls.register_script("chart-js-umd", "/_chart/chart.umd.js", is_url=True)
     cls.register_script("chart-js", script)
     return cls
 
