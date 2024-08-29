@@ -2,6 +2,8 @@ import uix
 from uix.elements import canvas
 from uix_components._chart_line.chart_line_utils import ChartUtils
 
+uix.app.serve_module_static_files(__file__)
+
 script = """
     event_handlers["init-chart"] = function (id, value, event_name) {
         let chart = new Chart(id, value);
@@ -9,8 +11,8 @@ script = """
         elm.chart = chart;
     };
 """
-
 def register_resources(cls):
+    cls.register_script("chart-js-umd", "/_chart_line/chart.umd.js", is_url=True)
     cls.register_script("chart-js", script)
     return cls
 

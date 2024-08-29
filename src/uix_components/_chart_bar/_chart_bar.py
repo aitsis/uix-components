@@ -1,16 +1,21 @@
+import uix
 from uix import Element
 from uix.elements import canvas
 from uix_components._chart_bar.chart_utils import ChartUtils
 
-script = """
-event_handlers["init-chart"] = function (id, value, event_name) {
-    let chart = new Chart(id, value);
-    elm = document.getElementById(id);
-    elm.chart = chart;
-};
-"""
+uix.app.serve_module_static_files(__file__)
 
+script = """
+    event_handlers["init-chart"] = function (id, value, event_name) {
+        Chart.register(ChartDataLabels);
+        let chart = new Chart(id, value);
+        elm = document.getElementById(id);
+        elm.chart = chart;
+    };
+"""
 def register_resources(cls):
+    cls.register_script("chart-js-umd", "/_chart_bar/chart.umd.js", is_url=True)
+    cls.register_script("chartjs-plugin-datalabels", "/_chart_bar/chartjs-plugin-datalabels.min.js", is_url=True)
     cls.register_script("chart-js", script)
     return cls
 
@@ -32,18 +37,29 @@ class chart_bar(Element):
                 "datasets": [
                 ],
             },
+            "plugins": ["ChartDataLabels"],
             "options": {
                 "responsive": None,
                 "plugins": {
                     "legend": {
-                    "position": None,
+                        "position": None,
                     },
-                "title": {
-                "display": None,
-                "text": None
+                    "title": {
+                        "display": None,
+                        "text": None
+                    },
+                    "datalabels": {
+                        "display": True,
+                        "color": "white",
+                        "font": {
+                            "size": 20,
+                            "weight": "bold"
+                        },
                     }
                 }
-            }
+            },
+           
+
         }
 
         ChartUtils.dataset_importer(self.chartData, self.value, self.labels)

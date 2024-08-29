@@ -1,3 +1,4 @@
+import uix
 from uix import Element
 from uix.elements import canvas
 from uix_components._chart_scatter.chart_scatter_utils import ChartUtils
@@ -9,8 +10,11 @@ script = """
         elm.chart = chart;
     };
 """
+uix.app.serve_module_static_files(__file__)
+
 
 def register_resources(cls):
+    cls.register_script("chart-js-umd", "/_chart_scatter/chart.umd.js", is_url=True)
     cls.register_script("chart-js", script)
     return cls
 

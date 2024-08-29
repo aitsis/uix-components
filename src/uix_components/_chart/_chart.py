@@ -4,9 +4,19 @@ from uix.elements import canvas, row, button, div
 
 uix.app.serve_module_static_files(__file__)
 
+script = """
+    event_handlers["init-chart"] = function (id, value, event_name) {
+        Chart.register(ChartDataLabels);
+        let chart = new Chart(id, value);
+        elm = document.getElementById(id);
+        elm.chart = chart;
+    };
+"""
+
 def register_resources(cls):
     cls.register_script("chart-js-umd", "/_chart/chart.umd.js", is_url=True)
-    cls.register_script("chart-js", "/_chart/chart.js", is_url=True)
+    cls.register_script("chartjs-plugin-datalabels", "/_chart/chartjs-plugin-datalabels.min.js", is_url=True)
+    cls.register_script("chart-js", script)
     return cls
 
 @register_resources

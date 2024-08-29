@@ -18,7 +18,7 @@ class ChartUtils:
     @staticmethod
     def set_responsive(chart_data, value):
         if isinstance(value, bool):
-            chart_data["options"] = {"responsive": value}
+            chart_data["options"]["responsive"] = value
         else:
             print("Responsive must be bool")
 
@@ -31,7 +31,6 @@ class ChartUtils:
                         
     @staticmethod
     def set_legend_pos(chart_data, value):
-        chart_data["options"]["plugins"] = {"legend": {}}
         chart_data["options"]["plugins"]["legend"]["position"] = value.lower()
         
     @staticmethod
