@@ -6,6 +6,7 @@ class chart_pie(chart):
     def __init__(self, id, value=None, labels=None, options=None):
         super().__init__(id=id, value=value)
         self._value = value
+        self.labels = labels
         self.value_name = None
         self.options = options
 
