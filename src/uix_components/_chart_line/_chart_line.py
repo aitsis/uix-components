@@ -35,8 +35,9 @@ class chart_line(chart):
                         "display": True,
                         "color": "white",
                         "font": {
-                            "size": 20,
-                            "weight": "bold"
+                            "family": "Exo 2",
+                            "size": 14,
+                            "weight": "bold",
                         },
                     }
                 }
