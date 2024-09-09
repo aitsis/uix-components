@@ -78,7 +78,7 @@ class output_image(uix.Element):
         buttonGroupConfig["seadragon"]["Zoom in"]["onClick"] = lambda ctx, id, value, key="Zoom in": self.on_click(ctx, id, key)
         buttonGroupConfig["seadragon"]["Zoom out"]["onClick"] = lambda ctx, id, value, key="Zoom out": self.on_click(ctx, id, key)
         buttonGroupConfig["seadragon"]["Home "]["onClick"] = lambda ctx, id, value, key="Home": self.on_click(ctx, id, key)
-        buttonGroupConfig["seadragon"]["Full screen"]["onClick"] = lambda ctx, id, value, key="Full Screen": self.on_click(ctx, id, key)
+        buttonGroupConfig["seadragon"]["Full screen"]["onClick"] = lambda ctx, id, value, key="Full screen": self.on_click(ctx, id, key)
         buttonGroupConfig["seadragon"]["Download"]["onClick"] = lambda ctx, id, value, key="Download": self.on_click(ctx, id, key)
         buttonGroupConfig["seadragon"]["Send to input"]["onClick"] = lambda ctx, id, value, key="Send to input": self.on_click(ctx, id, key)
         buttonGroupConfig["seadragon"]["Save"]["onClick"] = lambda ctx, id, value, key="Save": self.on_click(ctx, id, key)
@@ -152,6 +152,7 @@ class output_image(uix.Element):
         elif value == "Home":
             self.image_viewer.home()
         elif value == "Full screen":
+            print("Full screen")
             self.image_viewer.fullscreen()
         elif value == "Download":
             self.addToFavorite(ctx, "download", value)
