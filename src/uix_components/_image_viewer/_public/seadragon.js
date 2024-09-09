@@ -1,5 +1,6 @@
 let color = "black";
 let brushsize = 50;
+let maxZoomPixelRatio = 4;
 event_handlers["init-seadragon"] = function (id, value, event_name) {
     let config = value
 
@@ -10,6 +11,9 @@ event_handlers["init-seadragon"] = function (id, value, event_name) {
         tileSources : {"type": "image","url": config.image},
         toolbar: config.buttonGroupId,
         showNavigationControl: false,
+        maxZoomPixelRatio: maxZoomPixelRatio,
+        defaultZoomLevel: 1,
+    
     };
     document.getElementById(id).innerHTML = "";
 
@@ -28,7 +32,7 @@ event_handlers["init-interactiveSeadragon"] = function (id, value, event_name) {
         animationTime: 0,
         tileSources : {"type": "image","url": config.image},
         showNavigationControl: false,
-        maxZoomPixelRatio: 4,
+        maxZoomPixelRatio: maxZoomPixelRatio,
         autoHideControls: false,
         toolbar: config.buttonGroupId,
     
@@ -103,11 +107,15 @@ event_handlers["seadragon"] = function (id, command, event_name) {
             break;
 
         case "zoomIn":
-            viewer.viewport.zoomBy(1.5);
+            if (viewer.viewport.getZoom() < maxZoomPixelRatio){
+            viewer.viewport.zoomBy(1.5);}
+
             break;
 
         case "zoomOut":
-            viewer.viewport.zoomBy(0.5);
+            if (viewer.viewport.getZoom() > 1){
+            viewer.viewport.zoomBy(0.5);}
+            
             break;
 
         case "home":
@@ -115,6 +123,7 @@ event_handlers["seadragon"] = function (id, command, event_name) {
             break;
 
         case "fullscreen":
+            console.log(viewer.isFullPage());
             if (viewer.isFullPage()) {
                 viewer.setFullScreen(false);
                 return;
@@ -170,20 +179,22 @@ event_handlers["interactiveSeadragon"] = function (id, command, event_name) {
 
             freeDraw(true, document.getElementById(id).overlay , viewer);
             const edit_area = document.getElementById(command.value);
+
+   
             if(edit_area.classList.contains("active")){
                 edit_area.classList.remove("active");
             }else{
                 edit_area.classList.add("active");
             }
+        
 
-            window.addEventListener("click", function(e) {
-                if (!edit_area.contains(e.target)) {
-                    if (edit_area.classList.contains("active")) {
-                        edit_area.classList.remove("active");
-                    }
-
-                }
-            });
+            // window.addEventListener("click", function(e) {
+            //     if (!edit_area.contains(e.target)) {
+            //         if (edit_area.classList.contains("active")) {
+            //             edit_area.classList.remove("active");
+            //         }
+            //     }
+            // });
             break;
 
         case "editBrush":
