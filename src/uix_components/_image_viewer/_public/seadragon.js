@@ -12,7 +12,6 @@ event_handlers["init-seadragon"] = function (id, value, event_name) {
         toolbar: config.buttonGroupId,
         showNavigationControl: false,
         maxZoomPixelRatio: maxZoomPixelRatio,
-        defaultZoomLevel: 1,
     
     };
     document.getElementById(id).innerHTML = "";
@@ -123,7 +122,6 @@ event_handlers["seadragon"] = function (id, command, event_name) {
             break;
 
         case "fullscreen":
-            console.log(viewer.isFullPage());
             if (viewer.isFullPage()) {
                 viewer.setFullScreen(false);
                 return;
