@@ -12,6 +12,7 @@ event_handlers["init-seadragon"] = function (id, value, event_name) {
         toolbar: config.buttonGroupId,
         showNavigationControl: false,
         maxZoomPixelRatio: maxZoomPixelRatio,
+    
     };
     document.getElementById(id).innerHTML = "";
 
@@ -93,7 +94,6 @@ event_handlers["seadragon"] = function (id, command, event_name) {
 
             viewer.world.removeAll();
             viewer.open(command.value);
-            console.log(viewer.viewport.getZoom(),"open",command.value);
             break;
         case 'close':
             viewer.close();
@@ -106,16 +106,14 @@ event_handlers["seadragon"] = function (id, command, event_name) {
             break;
 
         case "zoomIn":
-            console.log(viewer.viewport.getZoom()),"zoomIn";
-      
-            viewer.viewport.zoomBy(1.5);
+            if (viewer.viewport.getZoom() < maxZoomPixelRatio){
+            viewer.viewport.zoomBy(1.5);}
 
             break;
 
         case "zoomOut":
-            console.log(viewer.viewport.getZoom()),"zoomOut";
-
-            viewer.viewport.zoomBy(0.5);
+            if (viewer.viewport.getZoom() > 1){
+            viewer.viewport.zoomBy(0.5);}
             
             break;
 
@@ -124,7 +122,6 @@ event_handlers["seadragon"] = function (id, command, event_name) {
             break;
 
         case "fullscreen":
-    
             if (viewer.isFullPage()) {
                 viewer.setFullScreen(false);
                 return;
